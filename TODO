@@ -1,0 +1,7 @@
+TODO:
+* The function mk-vec must be rewritten to handle utf-8 characters
+  This is maybe done by allocating something else than :char
+  And maybe doing something else then string-to-octets.
+  For example (map 'vector char-code)
+
+* rename mk-vec function to string to vector, and make sure that it always receives a string.
