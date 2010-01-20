@@ -1,6 +1,11 @@
 
 This is a project to learn more about Tokyo Cabinet and CFFI
 
+Update: looks like I'll make the whole library. For two reasons
+1. I'll use it in production, and I can not rely on others to do the work
+2. I whant the library to be LGPL
+
+
 The code relies on cl-store, flexi-stream and cl-tc
 
 The plan is to build a more lispy interface on top of cl-tc that on
