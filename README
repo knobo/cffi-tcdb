@@ -1,0 +1,12 @@
+
+This is a project to learn more about Tokyo Cabinet and CFFI
+
+The code relies on cl-store, flexi-stream and cl-tc
+
+The plan is to build a more lispy interface on top of cl-tc that on
+it's current state is just cffi bindings to the tokyo cabinet library.
+
+If the code turns out OK, I hope that parts of it could be merged in
+to cl-tc so that it becomes a fully functional lisp library for Tokyo
+Cabinet.
+
