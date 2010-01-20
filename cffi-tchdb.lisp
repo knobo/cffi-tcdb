@@ -4,8 +4,9 @@
 (in-package #:cffi-tchdb)
 
 (define-foreign-library tokyocabinet
-  (:unix (:or "libtokyocabinet.so.7" "libtokyocabinet.so"))
+  (:unix (:or "libtokyocabinet.so.8" "libtokyocabinet.so"))
   (t (:default "libtokyocabinet")))
+
 (use-foreign-library tokyocabinet)
 
 ;;;SWIG wrapper code starts here
