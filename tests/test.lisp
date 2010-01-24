@@ -17,13 +17,19 @@
 (def-suite test-db :description "testing the database")
 (in-suite test-db)
 
+(def-fixture dbx/fixture ()
+  (with-tchdb (db "/tmp/test-db")
+    (&body)))
+
+
 (test sore-object 
   "First test" 
-  (is (eql (type-of (store-restore-object *empty-test-object*)) 
-	   (type-of  *empty-test-object*))))
+  (with-fixture dbx/fixture ()
+    (is (eql (type-of (tchdb-store db "test" *empty-test-object*))
+	     (type-of (tchdb-restore db "test"))))))
 
 (test sore-utf-8-object 
-  "First test" 
+  "First test"
   (is (string-equal (store-restore-object "æøå")
 		    "æøå")))
 
