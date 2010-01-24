@@ -25,8 +25,8 @@
 (test sore-object 
   "First test" 
   (with-fixture dbx/fixture ()
-    (is (eql (type-of (tchdb-store db "test" *empty-test-object*))
-	     (type-of (tchdb-restore db "test"))))))
+    (is (eql (type-of (progn  (tchdb-store db "test-object" *empty-test-object*) *empty-test-object*))
+	     (type-of (tchdb-restore db "test-object"))))))
 
 (test sore-utf-8-object 
   "First test"
