@@ -5,7 +5,7 @@
     :version "0.0.1"
     :maintainer "bohmer@gmail.com"
     :author "bohmer@gmail.com"
-    :licence "LGPL"
+    :licence "LLGPL"
     :description "Bindings for Tokyo Cabinet"
     :depends-on (:cffi :flexi-streams :cl-store)
     :components ((:module :src
@@ -16,7 +16,7 @@
     :version "0.0.1"
     :maintainer "bohmer@gmail.com"
     :author "bohmer@gmail.com"
-    :licence "LGPL"
+    :licence "LLGPL"
     :description "Tests for tchdb"
     :depends-on (:cffi-tchdb :fiveam)
     :components ((:module :tests
@@ -27,7 +27,7 @@
     :version "0.0.1"
     :maintainer "bohmer@gmail.com"
     :author "bohmer@gmail.com"
-    :licence "LGPL"
+    :licence "LLGPL"
     :description "Examples for tchdb"
     :depends-on (:cffi-tchdb)
     :components ((:module :examples

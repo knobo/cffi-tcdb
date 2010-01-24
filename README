@@ -1,13 +1,13 @@
 This library is going to provide cffi bindings and a lispy interface
 to Tokyo Cabinet (and friends)[1]
 
-
 Warning:
 Code is for now highly experimental
 
 Please send suggestions and comments to 
 Knut Olav Bøhmmer <bohmer@gmail.com>
 
-This library is distributed under the terms of the GNU LGPL.
+This library is distributed under the terms of the LLGPL[2].
 
 [1] http://1978th.net/
+[2] http://opensource.franz.com/preamble.html

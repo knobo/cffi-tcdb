@@ -1,15 +1,6 @@
 TODO:
 
-* Have to write testes for every function
-
 * Make sure we don't leek memory.
-
-DONE:
-
-* The function mk-vec must be rewritten to handle utf-8 characters
-  This is maybe done by allocating something else than :char
-  And maybe doing something else then string-to-octets.
-  For example (map 'vector char-code)
-
-* rename mk-vec function to "string to vector" (or something), 
-  and make sure that it always receives a string.
+* Write testes for every function
+* Give this project a better name
+* Make an interface similar to lisp-hash-table

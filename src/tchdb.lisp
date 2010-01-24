@@ -1,3 +1,14 @@
+;;; -*- Mode: Lisp; Syntax: ANSI-Common-Lisp; Base: 10 -*-
+;;;
+;;; tchdb.lisp -- The lispy bindings
+;;; 
+;;; Copyright (c) 2010 by Knut Olav Bøhmer
+;;; <bohmer@gmail.com>
+;;;
+;;; Users are granted the rights to distribute and use this software
+;;; as governed by the terms of the Lisp Lesser GNU Public License
+;;; (http://opensource.franz.com/preamble.html), also known as the LLGPL.
+
 (defpackage #:tchdb
   (:use #:cl #:cl-store #:flexi-streams #:cffi-tchdb)
   (:export #:with-tchdb #:tc-put #:tc-get #:tcput #:tcget #:tchdb-restore #:tchdb-store))
