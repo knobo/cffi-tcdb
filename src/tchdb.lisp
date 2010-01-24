@@ -1,5 +1,6 @@
 (defpackage #:tchdb
-  (:use #:cl #:cl-store #:flexi-streams))
+  (:use #:cl #:cl-store #:flexi-streams)
+  (:export #:with-tchdb #:tc-put #:tc-get #:tcput #:tcget #:tchdb-restore #:tchdb-store))
 
 (in-package #:tchdb)
 
@@ -70,11 +71,11 @@
   (tcput-vector db "test" "1234123412341234")
   (octets-to-string (tcget-vector db "test")))
 
-(with-tchdb (db-test "/home/knobo/temp/tchdb")
+(with-tchdb (db-test "/tmp/tchdb")
   (tc-put db-test "foo" "baræøå")
   (tc-get db-test "foo"))
 
-(with-tchdb (db-test "/home/knobo/temp/tchdb")
+(with-tchdb (db-test "/tmp/tchdb")
   (let ((object (make-instance 'test-class)))
     (tchdb-store db-test "tofu" (list "æøåobject" object)) ;; æøå
     (tchdb-restore db-test "tofu")))
