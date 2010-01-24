@@ -10,7 +10,7 @@
     :depends-on (:cffi :flexi-streams :cl-store)
     :components ((:module :src
 			  :components ((:file "cffi-tchdb") 
-				       (:file "tchdb")))))
+				       (:file "tchdb" :depends-on ("cffi-tchdb"))))))
 (asdf:defsystem cffi-tchdb-tests
     :name "cffi-tchdb-tests"
     :version "0.0.1"
@@ -20,7 +20,7 @@
     :description "Tests for tchdb"
     :depends-on (:cffi-tchdb :fiveam)
     :components ((:module :tests
-			  :components ((:file "test.lisp")))))
+			  :components ((:file "test")))))
 
 (asdf:defsystem cffi-tchdb-examples
     :name "cffi-tchdb-examples"
@@ -31,6 +31,6 @@
     :description "Examples for tchdb"
     :depends-on (:cffi-tchdb)
     :components ((:module :examples
-			  :components ((:file "simple.lisp")))))
+			  :components ((:file "simple")))))
 
 
