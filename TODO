@@ -1,6 +1,7 @@
 TODO:
 
 * Make sure we don't leek memory.
+* (testing-frame-work) Change from fiveam to lift 
 * Write testes for every function
 * Give this project a better name
 * Make an interface similar to lisp-hash-table
