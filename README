@@ -1,5 +1,5 @@
 This library is going to provide cffi bindings and a lispy interface
-to Tokyo Cabinet (and friends)[1]
+to Tokyo Cabinet[1]
 
 Warning:
 Code is for now highly experimental
