@@ -1,0 +1,6 @@
+
+Install:
+* ln -s /path/to/tokyocabinet-source/ ./tokyocabinet
+* make
+
+
