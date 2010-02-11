@@ -13,6 +13,7 @@
 
 %include "missing.h"
 
+%include "/usr/lib/gcc/i486-linux-gnu/4.4/include/stdbool.h"
 %include "tokyocabinet/tcutil.h"
 %include "tokyocabinet/tctdb.h"
 

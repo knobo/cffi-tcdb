@@ -15,7 +15,7 @@
 (defpackage #:tcadb
   (:use #:cl #:cffi))
 
-(in-package #:tcadb)
+(in-package :tcadb)
 
 (declaim (optimize debug))
 
@@ -44,18 +44,19 @@ modules. Use #name=value appended to path"
        (tcadb-sys::tcadbdel ,db))))
 
 (defmacro with-transaction ((db) &body body)
-  (let ((result (gensym "result")))
-    `(let ((,result))
-       (tcadb-sys::tcadbtranbegin ,db)
-       (handler-case
-	   (setf ,result (progn ,@body))
-	 (error (tcadb-sys::tcadbtranabort ,db))
-	 (:no-error (tcadb-sys::tcadbtrancommit ,db)))  
-       ,result)))
+  `(progn
+     (tcadb-sys::tcadbtranbegin ,db)
+     (handler-case
+	 (progn ,@body)
+       (error (err)
+	 (tcadb-sys::tcadbtranabort ,db)
+	 (error err))
+       (:no-error (&rest args)
+	 (tcadb-sys::tcadbtrancommit ,db)
+	 (apply 'values args)))))
 
 (defmethod table-store ((item list))
   (format t "~{~s	~s~}" item))
-
 
 (defmethod tcget-vector :around ((key string) db &key (return-element-type :char))
   "Wrapping string keys. Probably this peaple are going to use"
@@ -66,25 +67,34 @@ modules. Use #name=value appended to path"
 
 (defmethod tcget-vector (key db &key (size 0)) 
   "Used to get records. Key must be of foreign pointer type. Maybe I'll do etypecase later (I love typecase)"
-  (assert (typep key 'cffi:foreign-pointer) key)
+  (assert (typep key 'cffi:foreign-pointer) (key))
   (cffi:with-foreign-object (length :int)
     (values 
      (tcadb-sys::tcadbget db key size length)
-     (cffi:mem-aref len :int 0))))
+     (cffi:mem-aref length :int 0))))
 
-(defun tcget2 (key db &optional (default nil))
+(defun tcget (key db &optional (default nil))
   "Used to get strings
 same interface as gethash, maybe it shoulod be called get2tcadb (no!)
 Please, help me with the naming convetion"
   (declare (ignore default))
   (tcadb-sys::tcadbget2 db key))
 
-(defun (setf tcget-vector) (val key db)
-  (with-foreign-strings ((keyp key) (valp val))
-    (tcadb-sys::tcadbput db keyp (length key) valp (length val))))
+(defmethod (setf tcget-vector) ((val string) (key string) db)
+  "why not just use tcget2?"
+  (with-foreign-strings (((key-ptr k-length) key) ((val-ptr v-length) val))
+    (tcadb-sys::tcadbput db key-ptr k-length val-ptr v-length)))
 
-(defun (setf tcget2) (val key db)
+(defmethod (setf tcget-vector) ((val array) (key string) db)
+  "Still assuming keys to be strings."
+  (assert (typep val '(array (unsigned-byte 8))) (val)) ;; or (coerce val '(array  (unsigned-byte 8))) ?
+  (with-foreign-string ((key-ptr k-length) key)
+    (let* ((v-length (length val))
+	   (val-ptr (cffi:convert-to-foreign val `(:array :char ,v-length))))
+      (unwind-protect
+	   (tcadb-sys::tcadbput db key-ptr k-length val-ptr v-length)
+	(cffi:foreign-free val-ptr)))))
+
+(defmethod (setf tcget) (val key db)
   (tcadb-sys::tcadbput2 db key val))
-
-
 

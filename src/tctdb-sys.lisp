@@ -6,7 +6,6 @@
   
 (defpackage #:tctdb-sys
  (:use #:cl #:cffi))
-
 (in-package :tctdb-sys)
 
 
@@ -62,6 +61,12 @@
 (defanonenum 
 	(HDBFOPEN #.(cl:ash 1 0))
 	(HDBFFATAL #.(cl:ash 1 1)))
+
+(cl:defconstant true 1)
+
+(cl:defconstant false 0)
+
+(cl:defconstant __bool_true_false_are_defined 1)
 
 (cffi:defcvar ("tcversion" tcversion)
  :string)
@@ -341,14 +346,14 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcmapputkeep" tcmapputkeep) :pointer
+(cffi:defcfun ("tcmapputkeep" tcmapputkeep) :boolean
   (map :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcmapputkeep2" tcmapputkeep2) :pointer
+(cffi:defcfun ("tcmapputkeep2" tcmapputkeep2) :boolean
   (map :pointer)
   (kstr :string)
   (vstr :string))
@@ -365,12 +370,12 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcmapout" tcmapout) :pointer
+(cffi:defcfun ("tcmapout" tcmapout) :boolean
   (map :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcmapout2" tcmapout2) :pointer
+(cffi:defcfun ("tcmapout2" tcmapout2) :boolean
   (map :pointer)
   (kstr :string))
 
@@ -384,13 +389,13 @@
   (map :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tcmapmove" tcmapmove) :pointer
+(cffi:defcfun ("tcmapmove" tcmapmove) :boolean
   (map :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (head :pointer))
 
-(cffi:defcfun ("tcmapmove2" tcmapmove2) :pointer
+(cffi:defcfun ("tcmapmove2" tcmapmove2) :boolean
   (map :pointer)
   (kstr :string)
   (head :pointer))
@@ -467,7 +472,7 @@
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcmapputproc" tcmapputproc) :pointer
+(cffi:defcfun ("tcmapputproc" tcmapputproc) :boolean
   (map :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -564,14 +569,14 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tctreeputkeep" tctreeputkeep) :pointer
+(cffi:defcfun ("tctreeputkeep" tctreeputkeep) :boolean
   (tree :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tctreeputkeep2" tctreeputkeep2) :pointer
+(cffi:defcfun ("tctreeputkeep2" tctreeputkeep2) :boolean
   (tree :pointer)
   (kstr :string)
   (vstr :string))
@@ -588,7 +593,7 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tctreeputproc" tctreeputproc) :pointer
+(cffi:defcfun ("tctreeputproc" tctreeputproc) :boolean
   (tree :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -597,12 +602,12 @@
   (proc :pointer)
   (op :pointer))
 
-(cffi:defcfun ("tctreeout" tctreeout) :pointer
+(cffi:defcfun ("tctreeout" tctreeout) :boolean
   (tree :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tctreeout2" tctreeout2) :pointer
+(cffi:defcfun ("tctreeout2" tctreeout2) :boolean
   (tree :pointer)
   (kstr :string))
 
@@ -674,7 +679,7 @@
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tctreeputkeep3" tctreeputkeep3) :pointer
+(cffi:defcfun ("tctreeputkeep3" tctreeputkeep3) :boolean
   (tree :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -762,14 +767,14 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcmdbputkeep" tcmdbputkeep) :pointer
+(cffi:defcfun ("tcmdbputkeep" tcmdbputkeep) :boolean
   (mdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcmdbputkeep2" tcmdbputkeep2) :pointer
+(cffi:defcfun ("tcmdbputkeep2" tcmdbputkeep2) :boolean
   (mdb :pointer)
   (kstr :string)
   (vstr :string))
@@ -786,12 +791,12 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcmdbout" tcmdbout) :pointer
+(cffi:defcfun ("tcmdbout" tcmdbout) :boolean
   (mdb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcmdbout2" tcmdbout2) :pointer
+(cffi:defcfun ("tcmdbout2" tcmdbout2) :boolean
   (mdb :pointer)
   (kstr :string))
 
@@ -883,7 +888,7 @@
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcmdbputproc" tcmdbputproc) :pointer
+(cffi:defcfun ("tcmdbputproc" tcmdbputproc) :boolean
   (mdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -937,14 +942,14 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcndbputkeep" tcndbputkeep) :pointer
+(cffi:defcfun ("tcndbputkeep" tcndbputkeep) :boolean
   (ndb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcndbputkeep2" tcndbputkeep2) :pointer
+(cffi:defcfun ("tcndbputkeep2" tcndbputkeep2) :boolean
   (ndb :pointer)
   (kstr :string)
   (vstr :string))
@@ -961,12 +966,12 @@
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcndbout" tcndbout) :pointer
+(cffi:defcfun ("tcndbout" tcndbout) :boolean
   (ndb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcndbout2" tcndbout2) :pointer
+(cffi:defcfun ("tcndbout2" tcndbout2) :boolean
   (ndb :pointer)
   (kstr :string))
 
@@ -1042,7 +1047,7 @@
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcndbputkeep3" tcndbputkeep3) :pointer
+(cffi:defcfun ("tcndbputkeep3" tcndbputkeep3) :boolean
   (ndb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -1056,7 +1061,7 @@
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcndbputproc" tcndbputproc) :pointer
+(cffi:defcfun ("tcndbputproc" tcndbputproc) :boolean
   (ndb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -1167,19 +1172,19 @@
   (astr :string)
   (bstr :string))
 
-(cffi:defcfun ("tcstrfwm" tcstrfwm) :pointer
+(cffi:defcfun ("tcstrfwm" tcstrfwm) :boolean
   (str :string)
   (key :string))
 
-(cffi:defcfun ("tcstrifwm" tcstrifwm) :pointer
+(cffi:defcfun ("tcstrifwm" tcstrifwm) :boolean
   (str :string)
   (key :string))
 
-(cffi:defcfun ("tcstrbwm" tcstrbwm) :pointer
+(cffi:defcfun ("tcstrbwm" tcstrbwm) :boolean
   (str :string)
   (key :string))
 
-(cffi:defcfun ("tcstribwm" tcstribwm) :pointer
+(cffi:defcfun ("tcstribwm" tcstribwm) :boolean
   (str :string)
   (key :string))
 
@@ -1242,7 +1247,7 @@
 (cffi:defcfun ("tcatof" tcatof) :double
   (str :string))
 
-(cffi:defcfun ("tcregexmatch" tcregexmatch) :pointer
+(cffi:defcfun ("tcregexmatch" tcregexmatch) :boolean
   (str :string)
   (regex :string))
 
@@ -1316,7 +1321,7 @@
 	(nodes :pointer)
 	(nnum :int))
 
-(cffi:defcfun ("tcstrisnum" tcstrisnum) :pointer
+(cffi:defcfun ("tcstrisnum" tcstrisnum) :boolean
   (str :string))
 
 (cffi:defcfun ("tcatoih" tcatoih) :pointer
@@ -1374,7 +1379,7 @@
   (top :pointer)
   (compar :pointer))
 
-(cffi:defcfun ("tcsleep" tcsleep) :pointer
+(cffi:defcfun ("tcsleep" tcsleep) :boolean
   (sec :double))
 
 (cffi:defcfun ("tcsysinfo" tcsysinfo) :pointer)
@@ -1393,7 +1398,7 @@
 (cffi:defcfun ("tcrealpath" tcrealpath) :string
   (path :string))
 
-(cffi:defcfun ("tcstatfile" tcstatfile) :pointer
+(cffi:defcfun ("tcstatfile" tcstatfile) :boolean
   (path :string)
   (isdirp :pointer)
   (sizep :pointer)
@@ -1407,12 +1412,12 @@
 (cffi:defcfun ("tcreadfilelines" tcreadfilelines) :pointer
   (path :string))
 
-(cffi:defcfun ("tcwritefile" tcwritefile) :pointer
+(cffi:defcfun ("tcwritefile" tcwritefile) :boolean
   (path :string)
   (ptr :pointer)
   (size :int))
 
-(cffi:defcfun ("tccopyfile" tccopyfile) :pointer
+(cffi:defcfun ("tccopyfile" tccopyfile) :boolean
   (src :string)
   (dest :string))
 
@@ -1422,25 +1427,25 @@
 (cffi:defcfun ("tcglobpat" tcglobpat) :pointer
   (pattern :string))
 
-(cffi:defcfun ("tcremovelink" tcremovelink) :pointer
+(cffi:defcfun ("tcremovelink" tcremovelink) :boolean
   (path :string))
 
-(cffi:defcfun ("tcwrite" tcwrite) :pointer
+(cffi:defcfun ("tcwrite" tcwrite) :boolean
   (fd :int)
   (buf :pointer)
   (size :pointer))
 
-(cffi:defcfun ("tcread" tcread) :pointer
+(cffi:defcfun ("tcread" tcread) :boolean
   (fd :int)
   (buf :pointer)
   (size :pointer))
 
-(cffi:defcfun ("tclock" tclock) :pointer
+(cffi:defcfun ("tclock" tclock) :boolean
   (fd :int)
   (ex :pointer)
   (nb :pointer))
 
-(cffi:defcfun ("tcunlock" tcunlock) :pointer
+(cffi:defcfun ("tcunlock" tcunlock) :boolean
   (fd :int))
 
 (cffi:defcfun ("tcsystem" tcsystem) :int
@@ -1627,7 +1632,7 @@
   (tmpl :pointer)
   (str :string))
 
-(cffi:defcfun ("tctmplload2" tctmplload2) :pointer
+(cffi:defcfun ("tctmplload2" tctmplload2) :boolean
   (tmpl :pointer)
   (path :string))
 
@@ -1770,16 +1775,16 @@
 (cffi:defcfun ("tczerounmap" tczerounmap) :void
   (ptr :pointer))
 
-(cffi:defcfun ("tcglobalmutexlock" tcglobalmutexlock) :pointer)
+(cffi:defcfun ("tcglobalmutexlock" tcglobalmutexlock) :boolean)
 
-(cffi:defcfun ("tcglobalmutexlockshared" tcglobalmutexlockshared) :pointer)
+(cffi:defcfun ("tcglobalmutexlockshared" tcglobalmutexlockshared) :boolean)
 
-(cffi:defcfun ("tcglobalmutexunlock" tcglobalmutexunlock) :pointer)
+(cffi:defcfun ("tcglobalmutexunlock" tcglobalmutexunlock) :boolean)
 
-(cffi:defcfun ("tcpathlock" tcpathlock) :pointer
+(cffi:defcfun ("tcpathlock" tcpathlock) :boolean
   (path :string))
 
-(cffi:defcfun ("tcpathunlock" tcpathunlock) :pointer
+(cffi:defcfun ("tcpathunlock" tcpathunlock) :boolean
   (path :string))
 
 (cffi:defcfun ("tcnumtostrbin" tcnumtostrbin) :int
@@ -1960,98 +1965,98 @@
 (cffi:defcfun ("tctdbecode" tctdbecode) :int
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbsetmutex" tctdbsetmutex) :pointer
+(cffi:defcfun ("tctdbsetmutex" tctdbsetmutex) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbtune" tctdbtune) :pointer
+(cffi:defcfun ("tctdbtune" tctdbtune) :boolean
   (tdb :pointer)
   (bnum :pointer)
   (apow :pointer)
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tctdbsetcache" tctdbsetcache) :pointer
+(cffi:defcfun ("tctdbsetcache" tctdbsetcache) :boolean
   (tdb :pointer)
   (rcnum :pointer)
   (lcnum :pointer)
   (ncnum :pointer))
 
-(cffi:defcfun ("tctdbsetxmsiz" tctdbsetxmsiz) :pointer
+(cffi:defcfun ("tctdbsetxmsiz" tctdbsetxmsiz) :boolean
   (tdb :pointer)
   (xmsiz :pointer))
 
-(cffi:defcfun ("tctdbsetdfunit" tctdbsetdfunit) :pointer
+(cffi:defcfun ("tctdbsetdfunit" tctdbsetdfunit) :boolean
   (tdb :pointer)
   (dfunit :pointer))
 
-(cffi:defcfun ("tctdbopen" tctdbopen) :pointer
+(cffi:defcfun ("tctdbopen" tctdbopen) :boolean
   (tdb :pointer)
   (path :string)
   (omode :int))
 
-(cffi:defcfun ("tctdbclose" tctdbclose) :pointer
+(cffi:defcfun ("tctdbclose" tctdbclose) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbput" tctdbput) :pointer
+(cffi:defcfun ("tctdbput" tctdbput) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cols :pointer))
 
-(cffi:defcfun ("tctdbput2" tctdbput2) :pointer
+(cffi:defcfun ("tctdbput2" tctdbput2) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cbuf :pointer)
   (csiz :int))
 
-(cffi:defcfun ("tctdbput3" tctdbput3) :pointer
+(cffi:defcfun ("tctdbput3" tctdbput3) :boolean
   (tdb :pointer)
   (pkstr :string)
   (cstr :string))
 
-(cffi:defcfun ("tctdbputkeep" tctdbputkeep) :pointer
+(cffi:defcfun ("tctdbputkeep" tctdbputkeep) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cols :pointer))
 
-(cffi:defcfun ("tctdbputkeep2" tctdbputkeep2) :pointer
+(cffi:defcfun ("tctdbputkeep2" tctdbputkeep2) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cbuf :pointer)
   (csiz :int))
 
-(cffi:defcfun ("tctdbputkeep3" tctdbputkeep3) :pointer
+(cffi:defcfun ("tctdbputkeep3" tctdbputkeep3) :boolean
   (tdb :pointer)
   (pkstr :string)
   (cstr :string))
 
-(cffi:defcfun ("tctdbputcat" tctdbputcat) :pointer
+(cffi:defcfun ("tctdbputcat" tctdbputcat) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cols :pointer))
 
-(cffi:defcfun ("tctdbputcat2" tctdbputcat2) :pointer
+(cffi:defcfun ("tctdbputcat2" tctdbputcat2) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
   (cbuf :pointer)
   (csiz :int))
 
-(cffi:defcfun ("tctdbputcat3" tctdbputcat3) :pointer
+(cffi:defcfun ("tctdbputcat3" tctdbputcat3) :boolean
   (tdb :pointer)
   (pkstr :string)
   (cstr :string))
 
-(cffi:defcfun ("tctdbout" tctdbout) :pointer
+(cffi:defcfun ("tctdbout" tctdbout) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int))
 
-(cffi:defcfun ("tctdbout2" tctdbout2) :pointer
+(cffi:defcfun ("tctdbout2" tctdbout2) :boolean
   (tdb :pointer)
   (pkstr :string))
 
@@ -2079,7 +2084,7 @@
   (tdb :pointer)
   (pkstr :string))
 
-(cffi:defcfun ("tctdbiterinit" tctdbiterinit) :pointer
+(cffi:defcfun ("tctdbiterinit" tctdbiterinit) :boolean
   (tdb :pointer))
 
 (cffi:defcfun ("tctdbiternext" tctdbiternext) :pointer
@@ -2115,30 +2120,30 @@
   (pksiz :int)
   (num :double))
 
-(cffi:defcfun ("tctdbsync" tctdbsync) :pointer
+(cffi:defcfun ("tctdbsync" tctdbsync) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdboptimize" tctdboptimize) :pointer
+(cffi:defcfun ("tctdboptimize" tctdboptimize) :boolean
   (tdb :pointer)
   (bnum :pointer)
   (apow :pointer)
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tctdbvanish" tctdbvanish) :pointer
+(cffi:defcfun ("tctdbvanish" tctdbvanish) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbcopy" tctdbcopy) :pointer
+(cffi:defcfun ("tctdbcopy" tctdbcopy) :boolean
   (tdb :pointer)
   (path :string))
 
-(cffi:defcfun ("tctdbtranbegin" tctdbtranbegin) :pointer
+(cffi:defcfun ("tctdbtranbegin" tctdbtranbegin) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbtrancommit" tctdbtrancommit) :pointer
+(cffi:defcfun ("tctdbtrancommit" tctdbtrancommit) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbtranabort" tctdbtranabort) :pointer
+(cffi:defcfun ("tctdbtranabort" tctdbtranabort) :boolean
   (tdb :pointer))
 
 (cffi:defcfun ("tctdbpath" tctdbpath) :string
@@ -2150,7 +2155,7 @@
 (cffi:defcfun ("tctdbfsiz" tctdbfsiz) :pointer
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbsetindex" tctdbsetindex) :pointer
+(cffi:defcfun ("tctdbsetindex" tctdbsetindex) :boolean
   (tdb :pointer)
   (name :string)
   (type :int))
@@ -2183,10 +2188,10 @@
 (cffi:defcfun ("tctdbqrysearch" tctdbqrysearch) :pointer
   (qry :pointer))
 
-(cffi:defcfun ("tctdbqrysearchout" tctdbqrysearchout) :pointer
+(cffi:defcfun ("tctdbqrysearchout" tctdbqrysearchout) :boolean
   (qry :pointer))
 
-(cffi:defcfun ("tctdbqryproc" tctdbqryproc) :pointer
+(cffi:defcfun ("tctdbqryproc" tctdbqryproc) :boolean
   (qry :pointer)
   (proc :pointer)
   (op :pointer))
@@ -2213,10 +2218,10 @@
 (cffi:defcfun ("tctdbdbgfd" tctdbdbgfd) :int
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbhasmutex" tctdbhasmutex) :pointer
+(cffi:defcfun ("tctdbhasmutex" tctdbhasmutex) :boolean
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbmemsync" tctdbmemsync) :pointer
+(cffi:defcfun ("tctdbmemsync" tctdbmemsync) :boolean
   (tdb :pointer)
   (phys :pointer))
 
@@ -2253,16 +2258,16 @@
 (cffi:defcfun ("tctdbuidseed" tctdbuidseed) :pointer
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbsetuidseed" tctdbsetuidseed) :pointer
+(cffi:defcfun ("tctdbsetuidseed" tctdbsetuidseed) :boolean
   (tdb :pointer)
   (seed :pointer))
 
-(cffi:defcfun ("tctdbsetinvcache" tctdbsetinvcache) :pointer
+(cffi:defcfun ("tctdbsetinvcache" tctdbsetinvcache) :boolean
   (tdb :pointer)
   (iccmax :pointer)
   (iccsync :double))
 
-(cffi:defcfun ("tctdbsetcodecfunc" tctdbsetcodecfunc) :pointer
+(cffi:defcfun ("tctdbsetcodecfunc" tctdbsetcodecfunc) :boolean
   (tdb :pointer)
   (enc :pointer)
   (encop :pointer)
@@ -2272,11 +2277,11 @@
 (cffi:defcfun ("tctdbdfunit" tctdbdfunit) :pointer
   (tdb :pointer))
 
-(cffi:defcfun ("tctdbdefrag" tctdbdefrag) :pointer
+(cffi:defcfun ("tctdbdefrag" tctdbdefrag) :boolean
   (tdb :pointer)
   (step :pointer))
 
-(cffi:defcfun ("tctdbputproc" tctdbputproc) :pointer
+(cffi:defcfun ("tctdbputproc" tctdbputproc) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int)
@@ -2293,26 +2298,26 @@
   (nsiz :int)
   (sp :pointer))
 
-(cffi:defcfun ("tctdbiterinit2" tctdbiterinit2) :pointer
+(cffi:defcfun ("tctdbiterinit2" tctdbiterinit2) :boolean
   (tdb :pointer)
   (pkbuf :pointer)
   (pksiz :int))
 
-(cffi:defcfun ("tctdbiterinit3" tctdbiterinit3) :pointer
+(cffi:defcfun ("tctdbiterinit3" tctdbiterinit3) :boolean
   (tdb :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tctdbforeach" tctdbforeach) :pointer
+(cffi:defcfun ("tctdbforeach" tctdbforeach) :boolean
   (tdb :pointer)
   (iter :pointer)
   (op :pointer))
 
-(cffi:defcfun ("tctdbqryproc2" tctdbqryproc2) :pointer
+(cffi:defcfun ("tctdbqryproc2" tctdbqryproc2) :boolean
   (qry :pointer)
   (proc :pointer)
   (op :pointer))
 
-(cffi:defcfun ("tctdbqrysearchout2" tctdbqrysearchout2) :pointer
+(cffi:defcfun ("tctdbqrysearchout2" tctdbqrysearchout2) :boolean
   (qry :pointer))
 
 (cffi:defcfun ("tctdbstrtoindextype" tctdbstrtoindextype) :int

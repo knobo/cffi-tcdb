@@ -10,15 +10,15 @@ all: tcdb
 
 tcdb: tchdb tctdb tcadb tcbdb tcutil
 
-tchdb: tchdb-sys.lisp
+tchdb: tchdb.lisp
 
-tctdb: tctdb-sys.lisp
+tctdb: tctdb.lisp
 
-tcadb: tcadb-sys.lisp
+tcadb: tcadb.lisp
 
-tcbdb: tcbdb-sys.lisp
+tcbdb: tcbdb.lisp
 
-tcutil: tcutil-sys.lisp
+tcutil: tcutil.lisp
 
 clean:
 	rm tc?db-sys.lisp

@@ -58,6 +58,12 @@
 ;;;SWIG wrapper code ends here
 
 
+(cl:defconstant true 1)
+
+(cl:defconstant false 0)
+
+(cl:defconstant __bool_true_false_are_defined 1)
+
 (cffi:defcstruct TCBDB
 	(mmtx :pointer)
 	(cmtx :pointer)
@@ -141,15 +147,15 @@
 (cffi:defcfun ("tcbdbecode" tcbdbecode) :int
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbsetmutex" tcbdbsetmutex) :pointer
+(cffi:defcfun ("tcbdbsetmutex" tcbdbsetmutex) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbsetcmpfunc" tcbdbsetcmpfunc) :pointer
+(cffi:defcfun ("tcbdbsetcmpfunc" tcbdbsetcmpfunc) :boolean
   (bdb :pointer)
   (cmp :pointer)
   (cmpop :pointer))
 
-(cffi:defcfun ("tcbdbtune" tcbdbtune) :pointer
+(cffi:defcfun ("tcbdbtune" tcbdbtune) :boolean
   (bdb :pointer)
   (lmemb :pointer)
   (nmemb :pointer)
@@ -158,91 +164,91 @@
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tcbdbsetcache" tcbdbsetcache) :pointer
+(cffi:defcfun ("tcbdbsetcache" tcbdbsetcache) :boolean
   (bdb :pointer)
   (lcnum :pointer)
   (ncnum :pointer))
 
-(cffi:defcfun ("tcbdbsetxmsiz" tcbdbsetxmsiz) :pointer
+(cffi:defcfun ("tcbdbsetxmsiz" tcbdbsetxmsiz) :boolean
   (bdb :pointer)
   (xmsiz :pointer))
 
-(cffi:defcfun ("tcbdbsetdfunit" tcbdbsetdfunit) :pointer
+(cffi:defcfun ("tcbdbsetdfunit" tcbdbsetdfunit) :boolean
   (bdb :pointer)
   (dfunit :pointer))
 
-(cffi:defcfun ("tcbdbopen" tcbdbopen) :pointer
+(cffi:defcfun ("tcbdbopen" tcbdbopen) :boolean
   (bdb :pointer)
   (path :string)
   (omode :int))
 
-(cffi:defcfun ("tcbdbclose" tcbdbclose) :pointer
+(cffi:defcfun ("tcbdbclose" tcbdbclose) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbput" tcbdbput) :pointer
+(cffi:defcfun ("tcbdbput" tcbdbput) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcbdbput2" tcbdbput2) :pointer
+(cffi:defcfun ("tcbdbput2" tcbdbput2) :boolean
   (bdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcbdbputkeep" tcbdbputkeep) :pointer
+(cffi:defcfun ("tcbdbputkeep" tcbdbputkeep) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcbdbputkeep2" tcbdbputkeep2) :pointer
+(cffi:defcfun ("tcbdbputkeep2" tcbdbputkeep2) :boolean
   (bdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcbdbputcat" tcbdbputcat) :pointer
+(cffi:defcfun ("tcbdbputcat" tcbdbputcat) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcbdbputcat2" tcbdbputcat2) :pointer
+(cffi:defcfun ("tcbdbputcat2" tcbdbputcat2) :boolean
   (bdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcbdbputdup" tcbdbputdup) :pointer
+(cffi:defcfun ("tcbdbputdup" tcbdbputdup) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcbdbputdup2" tcbdbputdup2) :pointer
+(cffi:defcfun ("tcbdbputdup2" tcbdbputdup2) :boolean
   (bdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcbdbputdup3" tcbdbputdup3) :pointer
+(cffi:defcfun ("tcbdbputdup3" tcbdbputdup3) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vals :pointer))
 
-(cffi:defcfun ("tcbdbout" tcbdbout) :pointer
+(cffi:defcfun ("tcbdbout" tcbdbout) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcbdbout2" tcbdbout2) :pointer
+(cffi:defcfun ("tcbdbout2" tcbdbout2) :boolean
   (bdb :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tcbdbout3" tcbdbout3) :pointer
+(cffi:defcfun ("tcbdbout3" tcbdbout3) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int))
@@ -327,10 +333,10 @@
   (ksiz :int)
   (num :double))
 
-(cffi:defcfun ("tcbdbsync" tcbdbsync) :pointer
+(cffi:defcfun ("tcbdbsync" tcbdbsync) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdboptimize" tcbdboptimize) :pointer
+(cffi:defcfun ("tcbdboptimize" tcbdboptimize) :boolean
   (bdb :pointer)
   (lmemb :pointer)
   (nmemb :pointer)
@@ -339,20 +345,20 @@
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tcbdbvanish" tcbdbvanish) :pointer
+(cffi:defcfun ("tcbdbvanish" tcbdbvanish) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbcopy" tcbdbcopy) :pointer
+(cffi:defcfun ("tcbdbcopy" tcbdbcopy) :boolean
   (bdb :pointer)
   (path :string))
 
-(cffi:defcfun ("tcbdbtranbegin" tcbdbtranbegin) :pointer
+(cffi:defcfun ("tcbdbtranbegin" tcbdbtranbegin) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbtrancommit" tcbdbtrancommit) :pointer
+(cffi:defcfun ("tcbdbtrancommit" tcbdbtrancommit) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbtranabort" tcbdbtranabort) :pointer
+(cffi:defcfun ("tcbdbtranabort" tcbdbtranabort) :boolean
   (bdb :pointer))
 
 (cffi:defcfun ("tcbdbpath" tcbdbpath) :string
@@ -370,39 +376,39 @@
 (cffi:defcfun ("tcbdbcurdel" tcbdbcurdel) :void
   (cur :pointer))
 
-(cffi:defcfun ("tcbdbcurfirst" tcbdbcurfirst) :pointer
+(cffi:defcfun ("tcbdbcurfirst" tcbdbcurfirst) :boolean
   (cur :pointer))
 
-(cffi:defcfun ("tcbdbcurlast" tcbdbcurlast) :pointer
+(cffi:defcfun ("tcbdbcurlast" tcbdbcurlast) :boolean
   (cur :pointer))
 
-(cffi:defcfun ("tcbdbcurjump" tcbdbcurjump) :pointer
+(cffi:defcfun ("tcbdbcurjump" tcbdbcurjump) :boolean
   (cur :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcbdbcurjump2" tcbdbcurjump2) :pointer
+(cffi:defcfun ("tcbdbcurjump2" tcbdbcurjump2) :boolean
   (cur :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tcbdbcurprev" tcbdbcurprev) :pointer
+(cffi:defcfun ("tcbdbcurprev" tcbdbcurprev) :boolean
   (cur :pointer))
 
-(cffi:defcfun ("tcbdbcurnext" tcbdbcurnext) :pointer
+(cffi:defcfun ("tcbdbcurnext" tcbdbcurnext) :boolean
   (cur :pointer))
 
-(cffi:defcfun ("tcbdbcurput" tcbdbcurput) :pointer
+(cffi:defcfun ("tcbdbcurput" tcbdbcurput) :boolean
   (cur :pointer)
   (vbuf :pointer)
   (vsiz :int)
   (cpmode :int))
 
-(cffi:defcfun ("tcbdbcurput2" tcbdbcurput2) :pointer
+(cffi:defcfun ("tcbdbcurput2" tcbdbcurput2) :boolean
   (cur :pointer)
   (vstr :string)
   (cpmode :int))
 
-(cffi:defcfun ("tcbdbcurout" tcbdbcurout) :pointer
+(cffi:defcfun ("tcbdbcurout" tcbdbcurout) :boolean
   (cur :pointer))
 
 (cffi:defcfun ("tcbdbcurkey" tcbdbcurkey) :pointer
@@ -427,7 +433,7 @@
   (cur :pointer)
   (sp :pointer))
 
-(cffi:defcfun ("tcbdbcurrec" tcbdbcurrec) :pointer
+(cffi:defcfun ("tcbdbcurrec" tcbdbcurrec) :boolean
   (cur :pointer)
   (kxstr :pointer)
   (vxstr :pointer))
@@ -446,14 +452,14 @@
 (cffi:defcfun ("tcbdbdbgfd" tcbdbdbgfd) :int
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbhasmutex" tcbdbhasmutex) :pointer
+(cffi:defcfun ("tcbdbhasmutex" tcbdbhasmutex) :boolean
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbmemsync" tcbdbmemsync) :pointer
+(cffi:defcfun ("tcbdbmemsync" tcbdbmemsync) :boolean
   (bdb :pointer)
   (phys :pointer))
 
-(cffi:defcfun ("tcbdbcacheclear" tcbdbcacheclear) :pointer
+(cffi:defcfun ("tcbdbcacheclear" tcbdbcacheclear) :boolean
   (bdb :pointer))
 
 (cffi:defcfun ("tcbdbcmpfunc" tcbdbcmpfunc) :pointer
@@ -501,15 +507,15 @@
 (cffi:defcfun ("tcbdbbnumused" tcbdbbnumused) :pointer
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbsetlsmax" tcbdbsetlsmax) :pointer
+(cffi:defcfun ("tcbdbsetlsmax" tcbdbsetlsmax) :boolean
   (bdb :pointer)
   (lsmax :pointer))
 
-(cffi:defcfun ("tcbdbsetcapnum" tcbdbsetcapnum) :pointer
+(cffi:defcfun ("tcbdbsetcapnum" tcbdbsetcapnum) :boolean
   (bdb :pointer)
   (capnum :pointer))
 
-(cffi:defcfun ("tcbdbsetcodecfunc" tcbdbsetcodecfunc) :pointer
+(cffi:defcfun ("tcbdbsetcodecfunc" tcbdbsetcodecfunc) :boolean
   (bdb :pointer)
   (enc :pointer)
   (encop :pointer)
@@ -519,23 +525,23 @@
 (cffi:defcfun ("tcbdbdfunit" tcbdbdfunit) :pointer
   (bdb :pointer))
 
-(cffi:defcfun ("tcbdbdefrag" tcbdbdefrag) :pointer
+(cffi:defcfun ("tcbdbdefrag" tcbdbdefrag) :boolean
   (bdb :pointer)
   (step :pointer))
 
-(cffi:defcfun ("tcbdbputdupback" tcbdbputdupback) :pointer
+(cffi:defcfun ("tcbdbputdupback" tcbdbputdupback) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tcbdbputdupback2" tcbdbputdupback2) :pointer
+(cffi:defcfun ("tcbdbputdupback2" tcbdbputdupback2) :boolean
   (bdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tcbdbputproc" tcbdbputproc) :pointer
+(cffi:defcfun ("tcbdbputproc" tcbdbputproc) :boolean
   (bdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -544,16 +550,16 @@
   (proc :pointer)
   (op :pointer))
 
-(cffi:defcfun ("tcbdbcurjumpback" tcbdbcurjumpback) :pointer
+(cffi:defcfun ("tcbdbcurjumpback" tcbdbcurjumpback) :boolean
   (cur :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tcbdbcurjumpback2" tcbdbcurjumpback2) :pointer
+(cffi:defcfun ("tcbdbcurjumpback2" tcbdbcurjumpback2) :boolean
   (cur :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tcbdbforeach" tcbdbforeach) :pointer
+(cffi:defcfun ("tcbdbforeach" tcbdbforeach) :boolean
   (bdb :pointer)
   (iter :pointer)
   (op :pointer))

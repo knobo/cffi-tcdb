@@ -7,10 +7,19 @@ Code is for now highly experimental
 Please send suggestions and comments to 
 Knut Olav Bøhmmer <bohmer@gmail.com>
 
-KNOWN BUGS
-* When building tctdb-sys.lisp the line containing (TDBFFATAL #.HDBFFATA))
-  must be changed to         (TDBFFATAL #.HDBFFATAL))
-  There is an L missing. Must be a bug in swig
+Note 
+
+* It's not straight forward to store objects with tcget-vector and
+  restore them with tcget, even when keys are string. It does not look
+  to me as the reasen is that strings are 0-terminated, vectors are
+  not (I think). I don't know the reason. 
+
+KNOWN BUGS 
+
+* When building tctdb-sys.lisp (which you probably don't do anyway)
+  the line containing (TDBFFATAL #.HDBFFATA)) must be changed to
+  (TDBFFATAL #.HDBFFATAL)) There is an L missing. 
+  Must be a bug in swig
 
 
 This library is distributed under the terms of the LLGPL[2].

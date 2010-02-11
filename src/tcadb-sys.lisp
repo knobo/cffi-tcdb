@@ -58,6 +58,18 @@
 ;;;SWIG wrapper code ends here
 
 
+(cl:defconstant true 1)
+
+(cl:export 'true)
+
+(cl:defconstant false 0)
+
+(cl:export 'false)
+
+(cl:defconstant __bool_true_false_are_defined 1)
+
+(cl:export '__bool_true_false_are_defined)
+
 (cffi:defcstruct TCADB
 	(omode :int)
 	(mdb :pointer)
@@ -133,18 +145,18 @@
 
 (cl:export 'tcadbdel)
 
-(cffi:defcfun ("tcadbopen" tcadbopen) :pointer
+(cffi:defcfun ("tcadbopen" tcadbopen) :boolean
   (adb :pointer)
   (name :string))
 
 (cl:export 'tcadbopen)
 
-(cffi:defcfun ("tcadbclose" tcadbclose) :pointer
+(cffi:defcfun ("tcadbclose" tcadbclose) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbclose)
 
-(cffi:defcfun ("tcadbput" tcadbput) :pointer
+(cffi:defcfun ("tcadbput" tcadbput) :boolean
   (adb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -153,14 +165,14 @@
 
 (cl:export 'tcadbput)
 
-(cffi:defcfun ("tcadbput2" tcadbput2) :pointer
+(cffi:defcfun ("tcadbput2" tcadbput2) :boolean
   (adb :pointer)
   (kstr :string)
   (vstr :string))
 
 (cl:export 'tcadbput2)
 
-(cffi:defcfun ("tcadbputkeep" tcadbputkeep) :pointer
+(cffi:defcfun ("tcadbputkeep" tcadbputkeep) :boolean
   (adb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -169,14 +181,14 @@
 
 (cl:export 'tcadbputkeep)
 
-(cffi:defcfun ("tcadbputkeep2" tcadbputkeep2) :pointer
+(cffi:defcfun ("tcadbputkeep2" tcadbputkeep2) :boolean
   (adb :pointer)
   (kstr :string)
   (vstr :string))
 
 (cl:export 'tcadbputkeep2)
 
-(cffi:defcfun ("tcadbputcat" tcadbputcat) :pointer
+(cffi:defcfun ("tcadbputcat" tcadbputcat) :boolean
   (adb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -185,21 +197,21 @@
 
 (cl:export 'tcadbputcat)
 
-(cffi:defcfun ("tcadbputcat2" tcadbputcat2) :pointer
+(cffi:defcfun ("tcadbputcat2" tcadbputcat2) :boolean
   (adb :pointer)
   (kstr :string)
   (vstr :string))
 
 (cl:export 'tcadbputcat2)
 
-(cffi:defcfun ("tcadbout" tcadbout) :pointer
+(cffi:defcfun ("tcadbout" tcadbout) :boolean
   (adb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
 (cl:export 'tcadbout)
 
-(cffi:defcfun ("tcadbout2" tcadbout2) :pointer
+(cffi:defcfun ("tcadbout2" tcadbout2) :boolean
   (adb :pointer)
   (kstr :string))
 
@@ -232,7 +244,7 @@
 
 (cl:export 'tcadbvsiz2)
 
-(cffi:defcfun ("tcadbiterinit" tcadbiterinit) :pointer
+(cffi:defcfun ("tcadbiterinit" tcadbiterinit) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbiterinit)
@@ -279,39 +291,39 @@
 
 (cl:export 'tcadbadddouble)
 
-(cffi:defcfun ("tcadbsync" tcadbsync) :pointer
+(cffi:defcfun ("tcadbsync" tcadbsync) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbsync)
 
-(cffi:defcfun ("tcadboptimize" tcadboptimize) :pointer
+(cffi:defcfun ("tcadboptimize" tcadboptimize) :boolean
   (adb :pointer)
   (params :string))
 
 (cl:export 'tcadboptimize)
 
-(cffi:defcfun ("tcadbvanish" tcadbvanish) :pointer
+(cffi:defcfun ("tcadbvanish" tcadbvanish) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbvanish)
 
-(cffi:defcfun ("tcadbcopy" tcadbcopy) :pointer
+(cffi:defcfun ("tcadbcopy" tcadbcopy) :boolean
   (adb :pointer)
   (path :string))
 
 (cl:export 'tcadbcopy)
 
-(cffi:defcfun ("tcadbtranbegin" tcadbtranbegin) :pointer
+(cffi:defcfun ("tcadbtranbegin" tcadbtranbegin) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbtranbegin)
 
-(cffi:defcfun ("tcadbtrancommit" tcadbtrancommit) :pointer
+(cffi:defcfun ("tcadbtrancommit" tcadbtrancommit) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbtrancommit)
 
-(cffi:defcfun ("tcadbtranabort" tcadbtranabort) :pointer
+(cffi:defcfun ("tcadbtranabort" tcadbtranabort) :boolean
   (adb :pointer))
 
 (cl:export 'tcadbtranabort)
@@ -430,7 +442,7 @@
 
 (cl:export 'ADBMAPPROC)
 
-(cffi:defcfun ("tcadbsetskel" tcadbsetskel) :pointer
+(cffi:defcfun ("tcadbsetskel" tcadbsetskel) :boolean
   (adb :pointer)
   (skel :pointer))
 
@@ -446,7 +458,7 @@
 
 (cl:export 'tcadbreveal)
 
-(cffi:defcfun ("tcadbputproc" tcadbputproc) :pointer
+(cffi:defcfun ("tcadbputproc" tcadbputproc) :boolean
   (adb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -457,14 +469,14 @@
 
 (cl:export 'tcadbputproc)
 
-(cffi:defcfun ("tcadbforeach" tcadbforeach) :pointer
+(cffi:defcfun ("tcadbforeach" tcadbforeach) :boolean
   (adb :pointer)
   (iter :pointer)
   (op :pointer))
 
 (cl:export 'tcadbforeach)
 
-(cffi:defcfun ("tcadbmapbdb" tcadbmapbdb) :pointer
+(cffi:defcfun ("tcadbmapbdb" tcadbmapbdb) :boolean
   (adb :pointer)
   (keys :pointer)
   (bdb :pointer)
@@ -474,7 +486,7 @@
 
 (cl:export 'tcadbmapbdb)
 
-(cffi:defcfun ("tcadbmapbdbemit" tcadbmapbdbemit) :pointer
+(cffi:defcfun ("tcadbmapbdbemit" tcadbmapbdbemit) :boolean
   (map :pointer)
   (kbuf :string)
   (ksiz :int)

@@ -58,6 +58,12 @@
 ;;;SWIG wrapper code ends here
 
 
+(cl:defconstant true 1)
+
+(cl:defconstant false 0)
+
+(cl:defconstant __bool_true_false_are_defined 1)
+
 (cffi:defcstruct TCHDB
 	(mmtx :pointer)
 	(rmtxs :pointer)
@@ -162,90 +168,90 @@
 (cffi:defcfun ("tchdbecode" tchdbecode) :int
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbsetmutex" tchdbsetmutex) :pointer
+(cffi:defcfun ("tchdbsetmutex" tchdbsetmutex) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbtune" tchdbtune) :pointer
+(cffi:defcfun ("tchdbtune" tchdbtune) :boolean
   (hdb :pointer)
   (bnum :pointer)
   (apow :pointer)
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tchdbsetcache" tchdbsetcache) :pointer
+(cffi:defcfun ("tchdbsetcache" tchdbsetcache) :boolean
   (hdb :pointer)
   (rcnum :pointer))
 
-(cffi:defcfun ("tchdbsetxmsiz" tchdbsetxmsiz) :pointer
+(cffi:defcfun ("tchdbsetxmsiz" tchdbsetxmsiz) :boolean
   (hdb :pointer)
   (xmsiz :pointer))
 
-(cffi:defcfun ("tchdbsetdfunit" tchdbsetdfunit) :pointer
+(cffi:defcfun ("tchdbsetdfunit" tchdbsetdfunit) :boolean
   (hdb :pointer)
   (dfunit :pointer))
 
-(cffi:defcfun ("tchdbopen" tchdbopen) :pointer
+(cffi:defcfun ("tchdbopen" tchdbopen) :boolean
   (hdb :pointer)
   (path :string)
   (omode :int))
 
-(cffi:defcfun ("tchdbclose" tchdbclose) :pointer
+(cffi:defcfun ("tchdbclose" tchdbclose) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbput" tchdbput) :pointer
+(cffi:defcfun ("tchdbput" tchdbput) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tchdbput2" tchdbput2) :pointer
+(cffi:defcfun ("tchdbput2" tchdbput2) :boolean
   (hdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tchdbputkeep" tchdbputkeep) :pointer
+(cffi:defcfun ("tchdbputkeep" tchdbputkeep) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tchdbputkeep2" tchdbputkeep2) :pointer
+(cffi:defcfun ("tchdbputkeep2" tchdbputkeep2) :boolean
   (hdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tchdbputcat" tchdbputcat) :pointer
+(cffi:defcfun ("tchdbputcat" tchdbputcat) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tchdbputcat2" tchdbputcat2) :pointer
+(cffi:defcfun ("tchdbputcat2" tchdbputcat2) :boolean
   (hdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tchdbputasync" tchdbputasync) :pointer
+(cffi:defcfun ("tchdbputasync" tchdbputasync) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
   (vbuf :pointer)
   (vsiz :int))
 
-(cffi:defcfun ("tchdbputasync2" tchdbputasync2) :pointer
+(cffi:defcfun ("tchdbputasync2" tchdbputasync2) :boolean
   (hdb :pointer)
   (kstr :string)
   (vstr :string))
 
-(cffi:defcfun ("tchdbout" tchdbout) :pointer
+(cffi:defcfun ("tchdbout" tchdbout) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tchdbout2" tchdbout2) :pointer
+(cffi:defcfun ("tchdbout2" tchdbout2) :boolean
   (hdb :pointer)
   (kstr :string))
 
@@ -275,7 +281,7 @@
   (hdb :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tchdbiterinit" tchdbiterinit) :pointer
+(cffi:defcfun ("tchdbiterinit" tchdbiterinit) :boolean
   (hdb :pointer))
 
 (cffi:defcfun ("tchdbiternext" tchdbiternext) :pointer
@@ -285,7 +291,7 @@
 (cffi:defcfun ("tchdbiternext2" tchdbiternext2) :string
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbiternext3" tchdbiternext3) :pointer
+(cffi:defcfun ("tchdbiternext3" tchdbiternext3) :boolean
   (hdb :pointer)
   (kxstr :pointer)
   (vxstr :pointer))
@@ -313,30 +319,30 @@
   (ksiz :int)
   (num :double))
 
-(cffi:defcfun ("tchdbsync" tchdbsync) :pointer
+(cffi:defcfun ("tchdbsync" tchdbsync) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdboptimize" tchdboptimize) :pointer
+(cffi:defcfun ("tchdboptimize" tchdboptimize) :boolean
   (hdb :pointer)
   (bnum :pointer)
   (apow :pointer)
   (fpow :pointer)
   (opts :pointer))
 
-(cffi:defcfun ("tchdbvanish" tchdbvanish) :pointer
+(cffi:defcfun ("tchdbvanish" tchdbvanish) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbcopy" tchdbcopy) :pointer
+(cffi:defcfun ("tchdbcopy" tchdbcopy) :boolean
   (hdb :pointer)
   (path :string))
 
-(cffi:defcfun ("tchdbtranbegin" tchdbtranbegin) :pointer
+(cffi:defcfun ("tchdbtranbegin" tchdbtranbegin) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbtrancommit" tchdbtrancommit) :pointer
+(cffi:defcfun ("tchdbtrancommit" tchdbtrancommit) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbtranabort" tchdbtranabort) :pointer
+(cffi:defcfun ("tchdbtranabort" tchdbtranabort) :boolean
   (hdb :pointer))
 
 (cffi:defcfun ("tchdbpath" tchdbpath) :string
@@ -366,14 +372,14 @@
 (cffi:defcfun ("tchdbdbgfd" tchdbdbgfd) :int
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbhasmutex" tchdbhasmutex) :pointer
+(cffi:defcfun ("tchdbhasmutex" tchdbhasmutex) :boolean
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbmemsync" tchdbmemsync) :pointer
+(cffi:defcfun ("tchdbmemsync" tchdbmemsync) :boolean
   (hdb :pointer)
   (phys :pointer))
 
-(cffi:defcfun ("tchdbcacheclear" tchdbcacheclear) :pointer
+(cffi:defcfun ("tchdbcacheclear" tchdbcacheclear) :boolean
   (hdb :pointer))
 
 (cffi:defcfun ("tchdbbnum" tchdbbnum) :pointer
@@ -412,7 +418,7 @@
 (cffi:defcfun ("tchdbbnumused" tchdbbnumused) :pointer
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbsetcodecfunc" tchdbsetcodecfunc) :pointer
+(cffi:defcfun ("tchdbsetcodecfunc" tchdbsetcodecfunc) :boolean
   (hdb :pointer)
   (enc :pointer)
   (encop :pointer)
@@ -429,11 +435,11 @@
 (cffi:defcfun ("tchdbdfunit" tchdbdfunit) :pointer
   (hdb :pointer))
 
-(cffi:defcfun ("tchdbdefrag" tchdbdefrag) :pointer
+(cffi:defcfun ("tchdbdefrag" tchdbdefrag) :boolean
   (hdb :pointer)
   (step :pointer))
 
-(cffi:defcfun ("tchdbputproc" tchdbputproc) :pointer
+(cffi:defcfun ("tchdbputproc" tchdbputproc) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int)
@@ -460,21 +466,21 @@
   (vbp :pointer)
   (vsp :pointer))
 
-(cffi:defcfun ("tchdbiterinit2" tchdbiterinit2) :pointer
+(cffi:defcfun ("tchdbiterinit2" tchdbiterinit2) :boolean
   (hdb :pointer)
   (kbuf :pointer)
   (ksiz :int))
 
-(cffi:defcfun ("tchdbiterinit3" tchdbiterinit3) :pointer
+(cffi:defcfun ("tchdbiterinit3" tchdbiterinit3) :boolean
   (hdb :pointer)
   (kstr :string))
 
-(cffi:defcfun ("tchdbforeach" tchdbforeach) :pointer
+(cffi:defcfun ("tchdbforeach" tchdbforeach) :boolean
   (hdb :pointer)
   (iter :pointer)
   (op :pointer))
 
-(cffi:defcfun ("tchdbtranvoid" tchdbtranvoid) :pointer
+(cffi:defcfun ("tchdbtranvoid" tchdbtranvoid) :boolean
   (hdb :pointer))
 
 
