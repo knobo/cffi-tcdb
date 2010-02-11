@@ -57,29 +57,20 @@ modules. Use #name=value appended to path"
   (format t "~{~s	~s~}" item))
 
 
-(defmethod tcget-vector :around ((key string) db &key (value-element-type :int)
-				 (return-element-type :char) 
-				 (key-size nil))
-  (declare (ignore key-size value-element-type))
-  "Wrapping string keys. Probably this peaple gonna use"
+(defmethod tcget-vector :around ((key string) db &key (return-element-type :char))
+  "Wrapping string keys. Probably this peaple are going to use"
   (cffi:with-foreign-string  ((foreign-string size) key)
     (multiple-value-bind (value-ptr length) 
 	(tcget-vector foreign-string db :size size)
       (convert-from-foreign value-ptr `(:array ,return-element-type ,length)))))
 
-(defmethod tcget-vector  (key db &key test &allow-other-keys)  ;; This is fsckdup
-  (declare (ignore test))
-  (format t "Im not suppose to be here~%")
-  (force-output)
-  (values "diill" 0))
-
-(defmethod tcget-vector ((key sb-sys:system-area-pointer) db &key (size 0))  ;; Maybe not want to use this specialiser?			 
-  "Used to get records."
-  (let* ((length-ptr (cffi:foreign-alloc :int))
-	 (result (tcadb-sys::tcadbget db key size length-ptr))
-	 (len (cffi:mem-aref length-ptr :int)))
-    (foreign-free length-ptr)
-    (values result len)))
+(defmethod tcget-vector (key db &key (size 0)) 
+  "Used to get records. Key must be of foreign pointer type. Maybe I'll do etypecase later (I love typecase)"
+  (assert (typep key 'cffi:foreign-pointer) key)
+  (cffi:with-foreign-object (length :int)
+    (values 
+     (tcadb-sys::tcadbget db key size length)
+     (cffi:mem-aref len :int 0))))
 
 (defun tcget2 (key db &optional (default nil))
   "Used to get strings
