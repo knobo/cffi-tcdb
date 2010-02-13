@@ -55,8 +55,81 @@ modules. Use #name=value appended to path"
 	 (tcadb-sys::tcadbtrancommit ,db)
 	 (apply 'values args)))))
 
-(defmethod table-store ((item list))
-  (format t "~{~s	~s~}" item))
+
+(defmethod tcmkmap ((list list))
+  (let* ((length (/ (length list) 2))
+	 (map (tcutil-sys::tcmapnew2 length)))
+    (loop for (key val) on list by 'cddr
+       do (tcutil-sys::tcmapput2 map (format nil "~a" key)  (format nil "~a" val)))))
+
+(defmethod table-store (db key list)
+  (let ((cols (tcmkmap list)))
+    (unwind-protect
+	 (with-foreign-string ((key-ptr k-size) key)
+	   (unless (tctdb-sys::tctdbput db key-ptr k-size cols) ;; maybe us tcadbput
+	     (error (tcutil:errormsg db))))
+      (tcutil-sys::tcmapdel cols))))
+
+(defmethod table-store3 (db key val) 
+  (unless (tctdb-sys::tctdbput3 tdb key (format nil "~{~a	~a~^	~}" val)) ;; maybe us tcadbput
+    (error (tcutil:errormsg db))))
+
+(defun get-listval (db list i)
+  (with-foreign-object (rsiz :int)
+    (let ((rbuf (tctdb-sys::tclistval list i rsiz)))
+      (tctdb-sys::tctdbget db rbuf (mem-aref rsiz :int)))))
+
+(defmethod query (db query &key (limit nil) (skip 0))
+  (declare (optimize (debug 3)))
+  (let ((qry (tctdb-sys::tctdbqrynew db)))
+    (loop
+       for (name op exp) on query by #'cdddr
+       for opid = (tctdb-sys::tctdbqrystrtocondop op)
+       do (tctdb-sys::tctdbqryaddcond qry name opid exp))
+    (when limit
+      (tctdb-sys::tctdbqrysetlimit qry limit skip))
+    (let ((res (tctdb-sys::tctdbqrysearch qry)))
+      (loop
+	 for i below  (tctdb-sys::tclistnum res)
+	 for cols = (get-listval db res i)
+	 when cols
+	 collect (itercols cols)
+	 and
+	 do (tctdb-sys::tcmapdel cols))
+      (tctdb-sys::tclistdel res))
+    (tctdb-sys::tclistdel qry)))
+
+(defun itercols (cols)
+  (tctdb-sys::tcmapiterinit cols)
+  (loop for name = (tctdb-sys::tcmapiternext2 cols)
+       while name
+     collect (list name (tctdb-sys::tcmapget2 cols name))))
+
+
+
+  ;; qry = tctdbqrynew(tdb);
+  ;; tctdbqryaddcond(qry, "age", TDBQCNUMGE, "20");
+  ;; tctdbqryaddcond(qry, "lang", TDBQCSTROR, "ja,en");
+  ;; tctdbqrysetorder(qry, "name", TDBQOSTRASC);
+  ;; tctdbqrysetlimit(qry, 10, 0);
+  ;; res = tctdbqrysearch(qry);
+  ;; for(i = 0; i < tclistnum(res); i++){
+  ;;   rbuf = tclistval(res, i, &rsiz);
+  ;;   cols = tctdbget(tdb, rbuf, rsiz);
+  ;;   if(cols){
+  ;;     printf("%s", rbuf);
+  ;;     tcmapiterinit(cols);
+  ;;     while((name = tcmapiternext2(cols)) != NULL){
+  ;;       printf("\t%s\t%s", name, tcmapget2(cols, name));
+  ;;     }
+  ;;     printf("\n");
+  ;;     tcmapdel(cols);
+  ;;   }
+  ;; }
+  ;; tclistdel(res);
+  ;; tctdbqrydel(qry);
+
+
 
 (defmethod tcget-vector :around ((key string) db &key (return-element-type :char))
   "Wrapping string keys. Probably this peaple are going to use"
