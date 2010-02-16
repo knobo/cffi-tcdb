@@ -14,8 +14,8 @@
 				       (:file "tcutil"    :depends-on ("tcutil-sys"))
 				       (:file "tcadb-sys" :depends-on ("cffi-tcdb"))
 				       (:file "tctdb-sys" :depends-on ("cffi-tcdb"))
-				       (:file "tctdb"     :depends-on ("cffi-tcdb"))
-				       (:file "tcadb"     :depends-on ("tcutil" "cffi-tcdb" "tcadb-sys"))))))
+				       (:file "tctdb"     :depends-on ("tctdb-sys"))
+				       (:file "tcadb"     :depends-on ("tcutil" "cffi-tcdb" "tcadb-sys" "tctdb-sys"))))))
 
 (asdf:defsystem cffi-tchdb
     :name "cffi-tchdb"

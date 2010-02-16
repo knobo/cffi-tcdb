@@ -13,7 +13,9 @@
 ;;;
 
 (defpackage #:tcadb
-  (:use #:cl #:cffi))
+  (:use #:cl #:cffi)
+  (:export #:with-tcdb #:with-transaction #:tcget-vector)) 
+
 
 (in-package :tcadb)
 
@@ -59,84 +61,52 @@ modules. Use #name=value appended to path"
 (defmethod tcmkmap ((list list))
   (let* ((length (/ (length list) 2))
 	 (map (tcutil-sys::tcmapnew2 length)))
-    (loop for (key val) on list by 'cddr
-       do (tcutil-sys::tcmapput2 map (format nil "~a" key)  (format nil "~a" val)))))
+    (loop for (key val) on list by #'cddr
+       do (tcutil-sys::tcmapput2 map (format nil "~a" key)  (format nil "~a" val)))
+    map))
 
-(defmethod table-store (db key list)
-  (let ((cols (tcmkmap list)))
-    (unwind-protect
-	 (with-foreign-string ((key-ptr k-size) key)
-	   (unless (tctdb-sys::tctdbput db key-ptr k-size cols) ;; maybe us tcadbput
-	     (error (tcutil:errormsg db))))
-      (tcutil-sys::tcmapdel cols))))
+(defmethod tclistpush2 (list (element string))
+  (tcutil-sys::tclistpush2 list element))
 
-(defmethod table-store3 (db key val) 
-  (unless (tctdb-sys::tctdbput3 tdb key (format nil "~{~a	~a~^	~}" val)) ;; maybe us tcadbput
-    (error (tcutil:errormsg db))))
+(defmethod tclistpush2 (list (element symbol))
+  (tcutil-sys::tclistpush2 list (symbol-name element)))
 
-(defun get-listval (db list i)
-  (with-foreign-object (rsiz :int)
-    (let ((rbuf (tctdb-sys::tclistval list i rsiz)))
-      (tctdb-sys::tctdbget db rbuf (mem-aref rsiz :int)))))
+(defmethod tclistpush2 (list element)
+  (tcutil-sys::tclistpush2 list element))
 
-(defmethod query (db query &key (limit nil) (skip 0))
-  (declare (optimize (debug 3)))
-  (let ((qry (tctdb-sys::tctdbqrynew db)))
-    (loop
-       for (name op exp) on query by #'cdddr
-       for opid = (tctdb-sys::tctdbqrystrtocondop op)
-       do (tctdb-sys::tctdbqryaddcond qry name opid exp))
-    (when limit
-      (tctdb-sys::tctdbqrysetlimit qry limit skip))
-    (let ((res (tctdb-sys::tctdbqrysearch qry)))
-      (loop
-	 for i below  (tctdb-sys::tclistnum res)
-	 for cols = (get-listval db res i)
-	 when cols
-	 collect (itercols cols)
-	 and
-	 do (tctdb-sys::tcmapdel cols))
-      (tctdb-sys::tclistdel res))
-    (tctdb-sys::tclistdel qry)))
+(defmethod tclist (list)
+  (let ((tclist (tcutil-sys::tclistnew)))
+    (loop for element in list
+       do (tclistpush2 tclist element))
+    tclist))
 
-(defun itercols (cols)
-  (tctdb-sys::tcmapiterinit cols)
-  (loop for name = (tctdb-sys::tcmapiternext2 cols)
-       while name
-     collect (list name (tctdb-sys::tcmapget2 cols name))))
+(defmethod db-put (db (list list))
+  (db-misc db "put" (tclist list)))
 
+(defmethod db-search (db (list list))
+  (let ((tclist (tcutil-sys::tclistnew)))
+    (loop for qrycond in list
+       do (with-foreign-object (size-ptr :int)
+	    (let* ((array-ptr (tcutil-sys::tcstrjoin2 (tclist qrycond) size-ptr))
+		   (size (mem-aref size-ptr :int)))
+	      (tcutil-sys::tclistpush tclist array-ptr size))))
+    (db-misc db "search" tclist)))
 
-
-  ;; qry = tctdbqrynew(tdb);
-  ;; tctdbqryaddcond(qry, "age", TDBQCNUMGE, "20");
-  ;; tctdbqryaddcond(qry, "lang", TDBQCSTROR, "ja,en");
-  ;; tctdbqrysetorder(qry, "name", TDBQOSTRASC);
-  ;; tctdbqrysetlimit(qry, 10, 0);
-  ;; res = tctdbqrysearch(qry);
-  ;; for(i = 0; i < tclistnum(res); i++){
-  ;;   rbuf = tclistval(res, i, &rsiz);
-  ;;   cols = tctdbget(tdb, rbuf, rsiz);
-  ;;   if(cols){
-  ;;     printf("%s", rbuf);
-  ;;     tcmapiterinit(cols);
-  ;;     while((name = tcmapiternext2(cols)) != NULL){
-  ;;       printf("\t%s\t%s", name, tcmapget2(cols, name));
-  ;;     }
-  ;;     printf("\n");
-  ;;     tcmapdel(cols);
-  ;;   }
-  ;; }
-  ;; tclistdel(res);
-  ;; tctdbqrydel(qry);
-
-
+(defmethod db-misc (db op tclist)
+  (unwind-protect
+       (let ((result (tcadb-sys::tcadbmisc db op tclist)))
+	 (loop for i below  (tcutil-sys::tclistnum result)
+	    collect (tcutil-sys::tclistval2 result i)))
+    (tcutil-sys::tclistdel tclist)))
 
 (defmethod tcget-vector :around ((key string) db &key (return-element-type :char))
   "Wrapping string keys. Probably this peaple are going to use"
   (cffi:with-foreign-string  ((foreign-string size) key)
     (multiple-value-bind (value-ptr length) 
 	(tcget-vector foreign-string db :size size)
-      (convert-from-foreign value-ptr `(:array ,return-element-type ,length)))))
+      (case return-element-type
+	(:string (convert-from-foreign value-ptr :string))
+	(t (convert-from-foreign value-ptr `(:array ,return-element-type ,length)))))))
 
 (defmethod tcget-vector (key db &key (size 0)) 
   "Used to get records. Key must be of foreign pointer type. Maybe I'll do etypecase later (I love typecase)"

@@ -8,6 +8,7 @@
 %}
 
 %typemap(cout) _Bool ":boolean";
+%typemap(cout) _uint32_t ":unsigned-int";
 
 %feature("export");
 

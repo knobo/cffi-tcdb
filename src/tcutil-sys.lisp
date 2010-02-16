@@ -318,7 +318,9 @@
 (cffi:defcfun ("tcmapnew" tcmapnew) :pointer)
 
 (cffi:defcfun ("tcmapnew2" tcmapnew2) :pointer
-  (bnum :pointer))
+  (bnum :unsigned-int))
+
+;; (cffi:defctype uint32_t :unsigned-int)
 
 (cffi:defcfun ("tcmapnew3" tcmapnew3) :pointer
   (str :string)
