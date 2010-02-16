@@ -22,6 +22,8 @@
 (declaim (optimize debug))
 
 (defparameter *default-db-name* "*")
+(defparameter *db* nil)
+
 
 (defclass tcadb (tcdb::tcdb)
   ((db :accessor db-of     :initarg :db   :initform nil)
@@ -75,6 +77,9 @@ modules. Use #name=value appended to path"
 (defmethod tclistpush2 (list element)
   (tcutil-sys::tclistpush2 list element))
 
+(defmethod tclistpush2 (list (element fixnum))
+  (tcutil-sys::tclistpush2 list (format nil "~a" element)))
+
 (defmethod tclist (list)
   (let ((tclist (tcutil-sys::tclistnew)))
     (loop for element in list
@@ -83,6 +88,9 @@ modules. Use #name=value appended to path"
 
 (defmethod db-put (db (list list))
   (db-misc db "put" (tclist list)))
+
+(defmethod db-get (db (list list))
+  (db-misc db "get" (tclist list)))
 
 (defmethod db-search (db (list list))
   (let ((tclist (tcutil-sys::tclistnew)))
