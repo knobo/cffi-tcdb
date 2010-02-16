@@ -27,7 +27,6 @@
   ((db :accessor db-of     :initarg :db   :initform nil)
    (file :accessor file-of :initarg :file :initform *default-db-name*)))
 
-
 (defun opendb (db path)
   (let ((openstatus (tcadb-sys::tcadbopen db path)))
     (unless openstatus
@@ -38,7 +37,9 @@
   "mode is not used here. Just here for compability with other
 modules. Use #name=value appended to path"
   (declare (ignorable mode))
-  `(let ((,db (tcadb-sys::tcadbnew)))
+  `(let* ((,db (tcadb-sys::tcadbnew))
+	  (*db* ,db))
+     (declare (special *db*))
      (opendb ,db ,path)
      (unwind-protect
           (progn ,@body)
@@ -85,11 +86,12 @@ modules. Use #name=value appended to path"
 
 (defmethod db-search (db (list list))
   (let ((tclist (tcutil-sys::tclistnew)))
-    (loop for qrycond in list
-       do (with-foreign-object (size-ptr :int)
-	    (let* ((array-ptr (tcutil-sys::tcstrjoin2 (tclist qrycond) size-ptr))
-		   (size (mem-aref size-ptr :int)))
-	      (tcutil-sys::tclistpush tclist array-ptr size))))
+    (with-foreign-object (size-ptr :int)
+      (loop 
+	 for qrycond in list
+	 for array-ptr = (tcutil-sys::tcstrjoin2 (tclist qrycond) size-ptr)
+	 for size = (mem-aref size-ptr :int)
+	 do (tcutil-sys::tclistpush tclist array-ptr size)))
     (db-misc db "search" tclist)))
 
 (defmethod db-misc (db op tclist)
