@@ -28,8 +28,10 @@
 
 ;;; class to be used in examples
 ;;; Would be nice to take type in to account.
+;;; and, how to deal with ID's
+;;; Maybe ID = class-name+ID?
 (defclass example-class ()
-  ((id   :accessor id-of   :initarg :id)   ;;; and, how to deal with ID's
+  ((id   :accessor id-of   :initarg :id)
    (foo  :accessor foo-of  :initarg :foo)
    (bar  :accessor bar-of  :initarg :bar)
    (test :accessor test-of :initarg :test)

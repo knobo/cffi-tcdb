@@ -7,7 +7,7 @@
     :author "bohmer@gmail.com"
     :licence "LLGPL"
     :description "Bindings for Tokyo Cabinet"
-    :depends-on (:cffi :flexi-streams :cl-store)
+    :depends-on (:cffi :flexi-streams :cl-store :moptilities)
     :components ((:module :src
 			  :components ((:file "cffi-tcdb") 
 				       (:file "tcutil-sys"    :depends-on ("cffi-tcdb"))
@@ -51,15 +51,16 @@
     :components ((:module :tests
 			  :components ((:file "test")))))
 
-(asdf:defsystem cffi-tchdb-examples
+(asdf:defsystem cffi-tcadb-examples
     :name "cffi-tchdb-examples"
     :version "0.0.1"
     :maintainer "bohmer@gmail.com"
     :author "bohmer@gmail.com"
     :licence "LLGPL"
-    :description "Examples for tchdb"
+    :description "Examples for tcadb"
     :depends-on (:cffi-tchdb)
     :components ((:module :examples
-			  :components ((:file "simple")))))
+			  :components ((:file "objects")
+				       (:file "tcadb-example")))))
 
 

@@ -14,7 +14,7 @@
 
 (defpackage #:tcadb
   (:use #:cl #:cffi)
-  (:export #:with-tcdb #:with-transaction #:tcget-vector)) 
+  (:export #:with-tcdb #:with-transaction #:tcget-vector #:db-put #:db-search #:db-get)) 
 
 
 (in-package :tcadb)
