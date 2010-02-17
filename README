@@ -2,16 +2,19 @@ This library is going to provide cffi bindings and a lispy interface
 to Tokyo Cabinet[1]
 
 Warning:
-Code is for now highly experimental
+Code is for now highly experimental. The lisp API is not yet decided
 
 Please send suggestions and comments to 
 Knut Olav Bøhmmer <bohmer@gmail.com>
+or use Issues:
+http://github.com/knobo/cffi-tcdb/issues
+
 
 Note 
 
 * It's not straight forward to store objects with tcget-vector and
   restore them with tcget, even when keys are string. It does not look
-  to me as the reasen is that strings are 0-terminated, vectors are
+  to me as the reason is that strings are 0-terminated, vectors are
   not (I think). I don't know the reason. 
 
 KNOWN BUGS 
