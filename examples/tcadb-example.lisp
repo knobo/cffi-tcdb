@@ -31,7 +31,7 @@
 ;;; and, how to deal with ID's
 ;;; Maybe ID = class-name+ID?
 (defclass example-class ()
-  ((id   :accessor id-of   :initarg :id)
+  ((tcadb::id   :accessor id-of   :initarg :id)
    (foo  :accessor foo-of  :initarg :foo)
    (bar  :accessor bar-of  :initarg :bar)
    (test :accessor test-of :initarg :test)
