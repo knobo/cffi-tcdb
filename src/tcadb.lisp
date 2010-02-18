@@ -14,7 +14,16 @@
 
 (defpackage #:tcadb
   (:use #:cl #:cffi)
-  (:export #:with-tcdb #:with-transaction #:tcget-vector #:db-put #:db-search #:db-get)) 
+  (:export #:with-tcdb 
+	   #:with-transaction
+	   #:tcget-vector
+	   #:db-put
+	   #:db-search
+	   #:db-get
+	   #:def-db-class
+	   #:db-fetch
+	   #:db-find
+	   #:db-insert)) 
 
 
 (in-package :tcadb)
@@ -24,8 +33,7 @@
 (defparameter *default-db-name* "*")
 (defparameter *db* nil)
 
-
-(defclass tcadb (tcdb::tcdb)
+(defclass tcadb (tcdb::tcdb) ;; not in use yet.
   ((db :accessor db-of     :initarg :db   :initform nil)
    (file :accessor file-of :initarg :file :initform *default-db-name*)))
 
@@ -34,6 +42,11 @@
     (unless openstatus
       (let ((ecode (tcutil:errormsg db)))
 	(error "~a" (tcutil-sys::tcerrmsg ecode))))))
+
+(defmethod connected (db)
+  "I don't know of any other way to check if a database is connected
+yet. This matter has to be looked in to."
+  (tcadb-sys::tcadbpath db))
 
 (defmacro with-tcdb ((db path &key mode) &body body)
   "mode is not used here. Just here for compability with other
@@ -101,6 +114,9 @@ modules. Use #name=value appended to path"
 	 for size = (mem-aref size-ptr :int)
 	 do (tcutil-sys::tclistpush tclist array-ptr size)))
     (db-misc db "search" tclist)))
+
+(defmethod db-simple-search (db (list list))
+  (db-search db (loop for (key val) on list by #'cddr collect `(:|cond| ,key "str" ,val))))
 
 (defmethod db-misc (db op tclist)
   (unwind-protect

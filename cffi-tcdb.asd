@@ -18,17 +18,6 @@
 				       (:file "tcadb"     :depends-on ("tcutil" "cffi-tcdb" "tcadb-sys" "tctdb-sys"))
 				       (:file "tcadb-object-db" :depends-on ("tcadb"))))))
 
-(asdf:defsystem tcadb-examples
-    :name "tcadb-examples"
-    :version "0.0.1"
-    :maintainer "bohmer@gmail.com"
-    :author "bohmer@gmail.com"
-    :licence "LLGPL"
-    :description "Examples of Bindings for Tokyo Cabinet Abstract API"
-    :depends-on (:cffi-tcdb)
-    :components ((:module :examples
-			  :components ((:file "tchdb-examples")))))
-
 (asdf:defsystem cffi-tchdb
     :name "cffi-tchdb"
     :version "0.0.1"
