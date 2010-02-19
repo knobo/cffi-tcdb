@@ -34,23 +34,26 @@
    (test :accessor test-of :initarg :test)
    (dill :accessor dill-of :initarg :dill)))
 
+(def-db-class example2 (example-class)
+  ((id2  :accessor id2-of  :initarg :id2 :type :index)))
+
 ;;; Insert an object into database
 (defun insert-example ()
-  (let ((object (make-instance 'example-class :id 1 :foo "tofu" :bar "wisky")))
+  (let ((object (make-instance 'example2 :id 1 :id2 "yo" :foo "tofu" :bar "wisky")))
     (with-tcdb (db "/tmp/test1.tct")
       (with-transaction (db)
 	(db-insert object)))))
 
 ;;; Search for objects in a database (return keys)
 (defun search-example ()
-  (let ((object (make-instance 'example-class :foo "tofu" :bar "wisky")))
+  (let ((object (make-instance 'example2 :foo "tofu" :bar "wisky")))
     (with-tcdb (db "/tmp/test1.tct")
       (with-transaction (db)
 	(db-find object)))))
 
 ;;; Fetch an object from a database
 (defun fetch-example ()
-  (let ((object (make-instance 'example-class :id 1)))
+  (let ((object (make-instance 'example2 :id 1 :id2 "yo")))
     (with-tcdb (db "/tmp/test1.tct")
       (with-transaction (db)
 	(db-fetch object)))))

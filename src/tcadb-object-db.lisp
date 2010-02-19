@@ -10,7 +10,7 @@
 
 (defmethod object-to-list (object)
   "Takes an object and returns it in list form like this: (:slot value :slot value)"  
-  (let ((slots  (moptilities:direct-slot-names (class-of object))))
+  (let ((slots  (moptilities:slot-names (class-of object))))
     (loop for slot in slots
        when (slot-boundp object slot)
        append `(,(intern (symbol-name slot) :keyword) ,(slot-value object slot)))))
@@ -49,14 +49,19 @@ Returns a list of slots that are used as indexses."
 
 (defgeneric index-of (slots))
 (defgeneric class-name-string (slots))
+(defgeneric get-index-slots-of (object)
+  (:method-combination append))
 
 (defmacro def-db-class (name inherit slots)
   `(progn (defclass ,name ,inherit
 	    ,(normalize-slots slots))
+	  (defmethod get-index-slots-of append ((object ,name))
+	    (with-slots ,(get-index-slots slots) object
+	      (list ,@(get-index-slots slots))))
 	  (defmethod index-of ((object ,name))
 	    (with-slots ,(get-index-slots slots) object
 	      (format nil "~/fqsn/+~{~a~^+~}" (type-of object) 
-		      (list ,@(get-index-slots slots)))))     ;TODO optimize
+		      (get-index-slots-of object)))) ;TODO optimize
 	  (defmethod class-name-string ((object ,name))
 	    (format nil "~/fqsn/" (type-of object)))))
 
