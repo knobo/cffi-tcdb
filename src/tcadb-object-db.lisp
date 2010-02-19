@@ -35,7 +35,7 @@ used to convert type-key-values from index slots to 'normal' type (without 'inde
 		  (setf (getf def :type) (second type))))
 	       def)))
 
-(defmethod get-index-slots (slots)
+(defmethod parse-index-slots (slots)
   "Helper function for def-db-class
 Returns a list of slots that are used as indexses."
   (loop 
@@ -56,10 +56,10 @@ Returns a list of slots that are used as indexses."
   `(progn (defclass ,name ,inherit
 	    ,(normalize-slots slots))
 	  (defmethod get-index-slots-of append ((object ,name))
-	    (with-slots ,(get-index-slots slots) object
-	      (list ,@(get-index-slots slots))))
+	    (with-slots ,(parse-index-slots slots) object
+	      (list ,@(parse-index-slots slots))))
 	  (defmethod index-of ((object ,name))
-	    (with-slots ,(get-index-slots slots) object
+	    (with-slots ,(parse-index-slots slots) object
 	      (format nil "~/fqsn/+~{~a~^+~}" (type-of object) 
 		      (get-index-slots-of object)))) ;TODO optimize
 	  (defmethod class-name-string ((object ,name))
