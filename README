@@ -1,28 +1,30 @@
 This library is going to provide cffi bindings and a lispy interface
 to Tokyo Cabinet[1]
 
-Warning:
-Code is for now highly experimental. The lisp API is not yet decided
-
-Please send suggestions and comments to 
-Knut Olav Bøhmmer <bohmer@gmail.com>
-or use Issues:
-http://github.com/knobo/cffi-tcdb/issues
+* Warning:
+  - Code is for now highly experimental. The lisp API is not yet decided
+  - I would not use Tokyo Cabinet for anything but playing, becasue
+    there is no way to contact the developer, and no way to send in
+    patches or bug reports. Therefore use couchdb or mongodb instead.
 
 
-Note 
+* KNOWN BUGS 
 
-* It's not straight forward to store objects with tcget-vector and
-  restore them with tcget, even when keys are string. It does not look
-  to me as the reason is that strings are 0-terminated, vectors are
-  not (I think). I don't know the reason. 
+** When building tctdb-sys.lisp (which you probably don't do anyway)
+   the line containing (TDBFFATAL #.HDBFFATA)) must be changed to
+   (TDBFFATAL #.HDBFFATAL)) There is an L missing. 
+   Must be a bug in swig
 
-KNOWN BUGS 
+** cl-store
+   The code I tried to create that uses cl-store does not work. I have
+   problem understanding how to convert from and to-foreign.
 
-* When building tctdb-sys.lisp (which you probably don't do anyway)
-  the line containing (TDBFFATAL #.HDBFFATA)) must be changed to
-  (TDBFFATAL #.HDBFFATAL)) There is an L missing. 
-  Must be a bug in swig
+
+* Contact
+  Please send suggestions and comments to 
+  Knut Olav Bøhmmer <bohmer@gmail.com>
+  or use Issues:
+  http://github.com/knobo/cffi-tcdb/issues
 
 
 This library is distributed under the terms of the LLGPL[2].
