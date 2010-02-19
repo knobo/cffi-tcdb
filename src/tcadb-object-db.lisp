@@ -1,5 +1,3 @@
-
-
 (in-package :cl-user)
 
 (defun fqsn (stream object colon-p atsign-p &rest format-args)
@@ -43,13 +41,11 @@ Returns a list of slots that are used as indexses."
   (loop 
      for def in (copy-tree slots)
      when (destructuring-bind (slot &key type &allow-other-keys) def
-		  (when  (or (eql type :index)
-			     (and (listp type)
-				  (eql (car type) :index)))
-		    slot))
+	    (when  (or (eql type :index)
+		       (and (listp type)
+			    (eql (car type) :index)))
+	      slot))
      collect it))
-
-
 
 (defgeneric index-of (slots))
 (defgeneric class-name-string (slots))
@@ -59,7 +55,8 @@ Returns a list of slots that are used as indexses."
 	    ,(normalize-slots slots))
 	  (defmethod index-of ((object ,name))
 	    (with-slots ,(get-index-slots slots) object
-	      (format nil "~/fqsn/+~{~a~^+~}" (type-of object)  (list ,@(get-index-slots slots)))))
+	      (format nil "~/fqsn/+~{~a~^+~}" (type-of object) 
+		      (list ,@(get-index-slots slots)))))     ;TODO optimize
 	  (defmethod class-name-string ((object ,name))
 	    (format nil "~/fqsn/" (type-of object)))))
 
@@ -70,15 +67,11 @@ Returns a list of slots that are used as indexses."
     (assert (connected db) (db) "not connected")
     (db-put db `(,index ,@object-list))))
 
-(export 'db-insert)
-
 (defmethod db-find (object &optional (db *db*))
   "finds objects in the a data base"
   (let ((search-definition (make-search-definition object))
 	(object-type (class-name-string object)))
     (db-search db (list* `(:|cond| "" "BW" ,object-type) search-definition))))
-
-(export 'db-find)
 
 (defmethod parse-db-response (object list)
   (declare (ignore object))
@@ -92,5 +85,3 @@ Returns a list of slots that are used as indexses."
     (when db-string-list
       (let ((db-object-list (parse-db-response object db-string-list)))
 	(apply #'make-instance (type-of object) db-object-list)))))
-
-(export 'db-fetch)

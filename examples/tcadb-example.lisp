@@ -27,36 +27,12 @@
   (with-transaction (db)
     (tcadb::db-simple-search db  '(:foo "baz" :first :last))))
 
-;;; class to be used in examples
-;;; Would be nice to take type in to account.
-;;; and, how to deal with ID's
-;;; Maybe ID = class-name+ID?
-
-
-
-
 (def-db-class example-class ()
   ((id   :accessor id-of   :initarg :id :type :index)
    (foo  :accessor foo-of  :initarg :foo)
    (bar  :accessor bar-of  :initarg :bar)
    (test :accessor test-of :initarg :test)
    (dill :accessor dill-of :initarg :dill)))
-
- 
- ;; This could be optimized
-
-;; (format t "~/fqsn/" (type-of (make-instance 'tcadb-example::example-class)))
-
-
-
-
-;; I'm thinking db structure like this
-;;
-;; KEY -> Objects:
-;; NAME-OF-CLASS+id1+idn -> (:ID1 "id1" :IDn "idn" :SLOTS "values")
-;; The key is compesed of the name of the class, and the ID's of the
-;; class converted to string seperated by "+" (or some characther) in 
-;; the order they are defined.
 
 ;;; Insert an object into database
 (defun insert-example ()
