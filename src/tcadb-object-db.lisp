@@ -90,3 +90,8 @@ Returns a list of slots that are used as indexses."
     (when db-string-list
       (let ((db-object-list (parse-db-response object db-string-list)))
 	(apply #'make-instance (type-of object) db-object-list)))))
+
+(defmethod db-fetch-key (object id &optional (db *db*))
+  (let* ((db-string-list (db-get db (list id)))
+	 (db-object-list (parse-db-response object db-string-list)))
+    (apply #'make-instance (type-of object) db-object-list)))
